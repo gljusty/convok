@@ -99,7 +99,7 @@ const App = () => {
             position: `absolute`,
           }}
         >
-          Convoq
+          Convok
         </h1>
         <SignOut user={user} />
       </div>
