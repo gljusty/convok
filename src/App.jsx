@@ -1,0 +1,113 @@
+import React from "react";
+import "./App.css";
+import styled from "styled-components";
+
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
+import "firebase/compat/analytics";
+import { useAuthState } from "react-firebase-hooks/auth";
+import ChatComponent from "./components/ChatComponent";
+
+firebase.initializeApp({
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MSGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASURE_ID
+});
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
+const StyledSignOut = styled.button`
+  border-radius: 8px;
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  background-color: black;
+  color: whitesmoke;
+  padding: 5px;
+  cursor: pointer;
+`;
+
+const SignIn = () => {
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).then((results) => {
+      const user = results.user;
+      let docData = {
+        username: user.displayName,
+        email: user.email,
+        conversations: [],
+      };
+
+      //add user to db only if user doesnt already exist
+      firestore
+        .collection("users")
+        .doc(results.user.uid)
+        .get()
+        .then((results) => {
+          if (!results.exists) {
+            firestore
+              .collection("users")
+              .doc(user.uid)
+              .set(docData)
+              .catch((e) => console.log(`error: `, e));
+          }
+        });
+    });
+  };
+  return (
+    <>
+      <button className="sign-in" onClick={signInWithGoogle}>
+        Sign in with Google
+      </button>
+    </>
+  );
+};
+
+const SignOut = () => {
+  return (
+    auth.currentUser && (
+      <StyledSignOut
+        className="sign-out"
+        onClick={() => {
+          auth.signOut();
+        }}
+      >
+        Sign Out
+      </StyledSignOut>
+    )
+  );
+};
+
+const App = () => {
+  const [user] = useAuthState(auth);
+  return (
+    <div className="App">
+      <div>
+        <h1
+          style={{
+            color: `whitesmoke`,
+            float: `left`,
+            left: `1vw`,
+            top: `1vh`,
+            fontSize: `4em`,
+            position: `absolute`,
+          }}
+        >
+          Convoq
+        </h1>
+        <SignOut user={user} />
+      </div>
+      <section>
+        {user ? <ChatComponent user={user} store={firestore} /> : <SignIn />}
+      </section>
+    </div>
+  );
+};
+
+export default App;
