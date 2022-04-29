@@ -106,7 +106,6 @@ class ChatComponent extends React.Component {
       })
       .then(() => {
         this.msgRef.current.value = "";
-        this.scrollanchor.current.scrollIntoView();
       });
   };
 
