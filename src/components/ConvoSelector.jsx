@@ -70,20 +70,22 @@ const ConvoSelector = (props) => {
           return (
             <StyledRecentConvoBadge
               onClick={(e) => {
-                const elmnt = document.getElementById("_convoid");
+                if (id !== props.currentConversation) {
+                  const elmnt = document.getElementById("_convoid");
                 elmnt.classList.add(
                   "animate__animated",
                   "animate__fadeInUpBig"
                 );
-                elmnt.addEventListener("animationend", () => {
+                setTimeout( () => {
                   elmnt.classList.remove(
                     "animate__animated",
                     "animate__fadeInUpBig"
                   );
-                });
+                }, 25);
                 props.remoteSetState({ currentConversation: id });
                 props.updateConversation();
                 e.preventDefault();
+                }
               }}
               key={index}
             >
