@@ -56,9 +56,8 @@ class ChatComponent extends React.Component {
       .doc(this.state.currentConversation.trim())
       .onSnapshot((doc) => {
         if (doc.data().messages) {
-          this.setState({ messages: [...doc.data().messages] });
+          this.setState({ messages: [...doc.data().messages] })
         }
-        this.scrollanchor.current.scrollIntoView();
       });
     this.setState({ listenerActive: subscription });
   };

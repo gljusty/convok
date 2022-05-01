@@ -40,8 +40,7 @@ const SignIn = () => {
       const user = results.user;
       let docData = {
         username: user.displayName,
-        email: user.email,
-        conversations: [],
+        email: user.email
       };
 
       //add user to db only if user doesnt already exist
@@ -84,6 +83,17 @@ const SignOut = () => {
   );
 };
 
+const ToggleShowChatButton = () => {
+  return (
+      <button style={{height: `20px`, width: `20px`,}} onClick={()=>{
+          console.log(document.querySelector('#_chatdisplay'))
+          console.log('not detected')
+    }} />
+    )
+  }
+    
+
+
 const App = () => {
   const [user] = useAuthState(auth);
   return (
@@ -102,6 +112,7 @@ const App = () => {
           Convok
         </h1>
         <SignOut user={user} />
+        <ToggleShowChatButton />
       </div>
       <section>
         {user ? <ChatComponent user={user} store={firestore} /> : <SignIn />}
