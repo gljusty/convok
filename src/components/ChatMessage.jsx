@@ -43,18 +43,9 @@ const ChatMessage = (props) => {
     <div
       style={{ width: `inherit` }}
       className={`message ${messageClass} animate__animated animate__fadeIn`}
+      id={id}
     >
-      <StyledChatMessage
-        id={id}
-        onAnimationEnd={() => {
-          //const m = document.getElementById(id);
-          try {
-            this.classList.remove("animate__animated", "animate__fadeIn");
-          } catch {
-            //do nothing
-          }
-        }}
-      >
+      <StyledChatMessage>
         <StyledUserAvatar src={photoURL} title={props.user.displayName} referrerPolicy="no-referrer" />{" "}
         {text}{" "}
       </StyledChatMessage>

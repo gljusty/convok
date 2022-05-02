@@ -58,6 +58,9 @@ class ChatComponent extends React.Component {
         if (doc.data().messages) {
           this.setState({ messages: [...doc.data().messages] })
         }
+        setTimeout(()=>{
+          this.scrollanchor.current.scrollIntoView();
+        }, 25)
       });
     this.setState({ listenerActive: subscription });
   };
@@ -127,7 +130,7 @@ class ChatComponent extends React.Component {
   };
   render() {
     return (
-      <>
+      <div id="_chat_component">
         <ConvoSelector
           updateConversation={this.updateConversation}
           remoteSetState={this.remoteSetState}
@@ -160,7 +163,7 @@ class ChatComponent extends React.Component {
             placeholder="send a message!"
           />
         </form>
-      </>
+      </div>
     );
   }
 }

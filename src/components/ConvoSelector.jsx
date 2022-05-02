@@ -36,6 +36,7 @@ const StyledRecentConvoBadge = styled.div`
   width: fit-content;
   margin: 2px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const ConvoSelector = (props) => {

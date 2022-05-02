@@ -84,11 +84,18 @@ const SignOut = () => {
 };
 
 const ToggleShowChatButton = () => {
+  const toggleRef = React.createRef(true);
   return (
-      <button style={{height: `20px`, width: `20px`,}} onClick={()=>{
-          console.log(document.querySelector('#_chatdisplay'))
-          console.log('not detected')
-    }} />
+      <button style={{height: `20px`, width: `60px`,}} onClick={()=>{
+          if (toggleRef.current === false) {
+            document.querySelector('#_chat_component').style.display = ""
+            toggleRef.current = true;
+          }
+          else {
+            document.querySelector('#_chat_component').style.display = "none"
+            toggleRef.current = false;
+          }
+    }}>toggle</button>
     )
   }
     
