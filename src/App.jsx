@@ -105,7 +105,6 @@ const App = () => {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      <div>
         <h1
           style={{
             color: `whitesmoke`,
@@ -120,7 +119,6 @@ const App = () => {
         </h1>
         <SignOut user={user} />
         <ToggleShowChatButton />
-      </div>
       <section>
         {user ? <ChatComponent user={user} store={firestore} /> : <SignIn />}
       </section>
