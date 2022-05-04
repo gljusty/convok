@@ -56,14 +56,22 @@ class ChatComponent extends React.Component {
       .doc(this.state.currentConversation.trim())
       .onSnapshot((doc) => {
         if (doc.data().messages) {
-          this.setState({ messages: [...doc.data().messages] });
+          this.setState({ messages: [...doc.data().messages] })
         }
-        this.scrollanchor.current.scrollIntoView();
+        setTimeout(()=>{
+          this.scrollanchor.current.scrollIntoView();
+        }, 25)
       });
     this.setState({ listenerActive: subscription });
   };
 
-  updateConversation = () => {
+  updateConversation = (e) => {
+    e.preventDefault()
+    if (e.type ==="click") {
+      this.setState({ currentConversation: e.target.id })
+    } else {
+      this.setState({ currentConversation: e.target.firstChild.value })
+    }
     this.setState({ messages: [] });
     let freshConvoData = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -85,9 +93,8 @@ class ChatComponent extends React.Component {
       });
   };
 
-  convoCallback = (e) => {
-    e.preventDefault();
-    this.setState({ currentConversation: e.target.value, submittable: false });
+  convoCallback = () => {
+    this.setState({ submittable: false });
   };
 
   updateMessages = () => {
@@ -116,7 +123,7 @@ class ChatComponent extends React.Component {
 
   handleConvoSubmit = (e) => {
     e.preventDefault();
-    this.updateConversation();
+    this.updateConversation(e);
     this.setState({ submittable: true });
   };
 
@@ -128,7 +135,7 @@ class ChatComponent extends React.Component {
   };
   render() {
     return (
-      <>
+      <div id="_chat_component">
         <ConvoSelector
           updateConversation={this.updateConversation}
           remoteSetState={this.remoteSetState}
@@ -161,7 +168,7 @@ class ChatComponent extends React.Component {
             placeholder="send a message!"
           />
         </form>
-      </>
+      </div>
     );
   }
 }

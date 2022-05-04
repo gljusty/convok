@@ -22,7 +22,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-const StyledSignOut = styled.button`
+const StyledSignInOut = styled.button`
   border-radius: 8px;
   position: absolute;
   right: 1%;
@@ -40,8 +40,7 @@ const SignIn = () => {
       const user = results.user;
       let docData = {
         username: user.displayName,
-        email: user.email,
-        conversations: [],
+        email: user.email
       };
 
       //add user to db only if user doesnt already exist
@@ -62,9 +61,9 @@ const SignIn = () => {
   };
   return (
     <>
-      <button className="sign-in" onClick={signInWithGoogle}>
+      <StyledSignInOut onClick={signInWithGoogle}>
         Sign in with Google
-      </button>
+      </StyledSignInOut>
     </>
   );
 };
@@ -72,23 +71,41 @@ const SignIn = () => {
 const SignOut = () => {
   return (
     auth.currentUser && (
-      <StyledSignOut
+      <StyledSignInOut
         className="sign-out"
         onClick={() => {
           auth.signOut();
         }}
       >
         Sign Out
-      </StyledSignOut>
+      </StyledSignInOut>
     )
   );
 };
+
+const ToggleShowChatButton = () => {
+  const toggleRef = React.createRef(true);
+  return (
+      <button style={{height: `20px`, width: `60px`,}} onClick={()=>{
+          const d = document.querySelector('#_chat_component')
+          if (toggleRef.current === false) {
+            d.style.display = ""
+            toggleRef.current = true;
+          }
+          else {
+            d.style.display = "none"
+            toggleRef.current = false;
+          }
+    }}>toggle</button>
+    )
+  }
+    
+
 
 const App = () => {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      <div>
         <h1
           style={{
             color: `whitesmoke`,
@@ -102,7 +119,7 @@ const App = () => {
           Convok
         </h1>
         <SignOut user={user} />
-      </div>
+        <ToggleShowChatButton />
       <section>
         {user ? <ChatComponent user={user} store={firestore} /> : <SignIn />}
       </section>

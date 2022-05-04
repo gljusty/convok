@@ -36,12 +36,21 @@ const StyledRecentConvoBadge = styled.div`
   width: fit-content;
   margin: 2px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const ConvoSelector = (props) => {
   const [recentConversations, setRecentConversations] = useState([]);
   return (
     <StyledConvoSelector>
+      <p
+          style={{
+            color: "whitesmoke",
+            padding: 0,
+          }}
+        >
+          Convo ID: <span id="_convoid">{props.currentConversation}</span>
+        </p>
       <StyledConvoForm
         onSubmit={(e) => {
           const re = [...recentConversations, props.currentConversation.trim()];
@@ -51,17 +60,7 @@ const ConvoSelector = (props) => {
           props.handleConvoSubmit(e);
         }}
       >
-        <p
-          style={{
-            color: "whitesmoke",
-            padding: 0,
-          }}
-        >
-          Convo ID: <span id="_convoid">{props.currentConversation}</span>
-        </p>
         <StyledConvoInput
-          value={props.currentConversation}
-          onChange={(e) => props.parentCallback(e)}
           placeholder="Enter a conversation ID"
         />
       </StyledConvoForm>
@@ -70,24 +69,13 @@ const ConvoSelector = (props) => {
           return (
             <StyledRecentConvoBadge
               onClick={(e) => {
-                if (id !== props.currentConversation) {
-                  const elmnt = document.getElementById("_convoid");
-                elmnt.classList.add(
-                  "animate__animated",
-                  "animate__fadeInUpBig"
-                );
-                setTimeout( () => {
-                  elmnt.classList.remove(
-                    "animate__animated",
-                    "animate__fadeInUpBig"
-                  );
-                }, 25);
                 props.remoteSetState({ currentConversation: id });
-                props.updateConversation();
                 e.preventDefault();
+                props.updateConversation(e)
                 }
-              }}
+              }
               key={index}
+              id={id}
             >
               {id}
             </StyledRecentConvoBadge>
