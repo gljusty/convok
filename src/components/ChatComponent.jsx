@@ -93,10 +93,6 @@ class ChatComponent extends React.Component {
       });
   };
 
-  convoCallback = () => {
-    this.setState({ submittable: false });
-  };
-
   updateMessages = () => {
     const messageData = {
       sender: this.props.user.uid,
@@ -139,7 +135,6 @@ class ChatComponent extends React.Component {
         <ConvoSelector
           updateConversation={this.updateConversation}
           remoteSetState={this.remoteSetState}
-          parentCallback={this.convoCallback}
           handleConvoSubmit={this.handleConvoSubmit}
           currentConversation={this.state.currentConversation}
         />
@@ -150,7 +145,7 @@ class ChatComponent extends React.Component {
           <span ref={this.scrollanchor} />
           {
             //scroll anchor is at the top because the entire chat display is reversed and then flipped upside down.
-            //This is the only way I could get the default scroll behavior to work the way I wanted.
+            //This is the only way I could get the demo scroll behavior to work the way I wanted.
             this.state.messages.reverse().map((message) => {
               return (
                 <ChatMessage
