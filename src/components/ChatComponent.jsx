@@ -65,7 +65,13 @@ class ChatComponent extends React.Component {
     this.setState({ listenerActive: subscription });
   };
 
-  updateConversation = () => {
+  updateConversation = (e) => {
+    e.preventDefault()
+    if (e.type ==="click") {
+      this.setState({ currentConversation: e.target.id })
+    } else {
+      this.setState({ currentConversation: e.target.firstChild.value })
+    }
     this.setState({ messages: [] });
     let freshConvoData = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -87,9 +93,8 @@ class ChatComponent extends React.Component {
       });
   };
 
-  convoCallback = (e) => {
-    e.preventDefault();
-    this.setState({ currentConversation: e.target.value, submittable: false });
+  convoCallback = () => {
+    this.setState({ submittable: false });
   };
 
   updateMessages = () => {
@@ -118,7 +123,7 @@ class ChatComponent extends React.Component {
 
   handleConvoSubmit = (e) => {
     e.preventDefault();
-    this.updateConversation();
+    this.updateConversation(e);
     this.setState({ submittable: true });
   };
 

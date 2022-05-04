@@ -22,7 +22,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-const StyledSignOut = styled.button`
+const StyledSignInOut = styled.button`
   border-radius: 8px;
   position: absolute;
   right: 1%;
@@ -61,9 +61,9 @@ const SignIn = () => {
   };
   return (
     <>
-      <button className="sign-in" onClick={signInWithGoogle}>
+      <StyledSignInOut onClick={signInWithGoogle}>
         Sign in with Google
-      </button>
+      </StyledSignInOut>
     </>
   );
 };
@@ -71,14 +71,14 @@ const SignIn = () => {
 const SignOut = () => {
   return (
     auth.currentUser && (
-      <StyledSignOut
+      <StyledSignInOut
         className="sign-out"
         onClick={() => {
           auth.signOut();
         }}
       >
         Sign Out
-      </StyledSignOut>
+      </StyledSignInOut>
     )
   );
 };
@@ -87,12 +87,13 @@ const ToggleShowChatButton = () => {
   const toggleRef = React.createRef(true);
   return (
       <button style={{height: `20px`, width: `60px`,}} onClick={()=>{
+          const d = document.querySelector('#_chat_component')
           if (toggleRef.current === false) {
-            document.querySelector('#_chat_component').style.display = ""
+            d.style.display = ""
             toggleRef.current = true;
           }
           else {
-            document.querySelector('#_chat_component').style.display = "none"
+            d.style.display = "none"
             toggleRef.current = false;
           }
     }}>toggle</button>
