@@ -8,6 +8,7 @@ import "firebase/compat/auth";
 import "firebase/compat/analytics";
 import { useAuthState } from "react-firebase-hooks/auth";
 import ChatComponent from "./components/ChatComponent";
+import NavBar from "./components/NavBar"
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_API_KEY,
@@ -27,8 +28,9 @@ const StyledSignInOut = styled.button`
   position: absolute;
   right: 1%;
   top: 1%;
-  background-color: black;
-  color: whitesmoke;
+  background-color: aquamarine;
+  color: black;
+  font-weight: bold;
   padding: 5px;
   cursor: pointer;
 `;
@@ -118,6 +120,7 @@ const App = () => {
         >
           Convok
         </h1>
+        <NavBar />
         <SignOut user={user} />
         <ToggleShowChatButton />
       <section>

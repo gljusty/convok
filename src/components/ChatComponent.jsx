@@ -36,9 +36,8 @@ class ChatComponent extends React.Component {
     this.msgRef = React.createRef();
     this.scrollanchor = React.createRef();
     this.state = {
-      currentConversation: ``,
+      currentConversation: `test`,
       messages: [],
-      submittable: false,
       listenerActive: {},
     };
   }
@@ -62,21 +61,14 @@ class ChatComponent extends React.Component {
           this.scrollanchor.current.scrollIntoView();
         }, 25)
       });
-    this.setState({ listenerActive: subscription });
+      this.setState({ listenerActive: subscription });
   };
 
-  updateConversation = (e) => {
-    e.preventDefault()
-    if (e.type ==="click") {
-      this.setState({ currentConversation: e.target.id })
-    } else {
-      this.setState({ currentConversation: e.target.firstChild.value })
-    }
-    this.setState({ messages: [] });
-    let freshConvoData = {
+  setGetConversation = () => {
+    const freshConvoData = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       messages: [],
-    };
+    }
     //Creates conversation w/ given id if none exists; otherwise references conversation.
     this.props.store
       .collection("conversations")
@@ -89,12 +81,19 @@ class ChatComponent extends React.Component {
             .doc(this.state.currentConversation.trim())
             .set(freshConvoData);
         }
+      })
+      .finally(() => {
         this.toggleSubscription();
       });
-  };
+  }
 
-  convoCallback = () => {
-    this.setState({ submittable: false });
+  updateConversation = (e) => {
+    e.preventDefault()
+    if (e.type ==="click") {
+      this.setState({ currentConversation: e.target.id,  messages: []  }, this.setGetConversation())
+    } else {
+      this.setState({ currentConversation: e.target.firstChild.value,  messages: []  }, this.setGetConversation())
+    }
   };
 
   updateMessages = () => {
@@ -117,30 +116,15 @@ class ChatComponent extends React.Component {
       });
   };
 
-  remoteSetState = (obj) => {
-    this.setState(obj);
-  };
-
-  handleConvoSubmit = (e) => {
-    e.preventDefault();
-    this.updateConversation(e);
-    this.setState({ submittable: true });
-  };
-
   handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.submittable === true) {
-      this.updateMessages();
-    }
+    this.updateMessages();
   };
   render() {
     return (
       <div id="_chat_component">
         <ConvoSelector
           updateConversation={this.updateConversation}
-          remoteSetState={this.remoteSetState}
-          parentCallback={this.convoCallback}
-          handleConvoSubmit={this.handleConvoSubmit}
           currentConversation={this.state.currentConversation}
         />
         <StyledChatDisplay
@@ -150,7 +134,6 @@ class ChatComponent extends React.Component {
           <span ref={this.scrollanchor} />
           {
             //scroll anchor is at the top because the entire chat display is reversed and then flipped upside down.
-            //This is the only way I could get the demo scroll behavior to work the way I wanted.
             this.state.messages.reverse().map((message) => {
               return (
                 <ChatMessage
