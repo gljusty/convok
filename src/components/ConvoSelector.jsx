@@ -57,7 +57,7 @@ const ConvoSelector = (props) => {
           const cl = new Set(re);
           const arr = [...cl];
           setRecentConversations(arr);
-          props.handleConvoSubmit(e);
+          props.updateConversation(e)
         }}
       >
         <StyledConvoInput
@@ -69,7 +69,6 @@ const ConvoSelector = (props) => {
           return (
             <StyledRecentConvoBadge
               onClick={(e) => {
-                props.remoteSetState({ currentConversation: id });
                 e.preventDefault();
                 props.updateConversation(e)
                 }
