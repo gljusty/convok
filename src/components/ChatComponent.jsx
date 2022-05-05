@@ -22,6 +22,7 @@ const StyledChatDisplay = styled.div`
   display: flex;
   flex-direction: column-reverse;
 `;
+
 const StyledChatInput = styled.input`
   margin-top: 10px;
   padding: 2px;
@@ -36,10 +37,17 @@ class ChatComponent extends React.Component {
     this.msgRef = React.createRef();
     this.scrollanchor = React.createRef();
     this.state = {
-      currentConversation: `test`,
+      currentConversation: `#welcome`,
       messages: [],
       listenerActive: {},
     };
+  }
+  componentDidMount() {
+    try {
+      this.setGetConversation();
+    } catch (e) {
+      // do nothing
+    }
   }
 
   toggleSubscription = () => {
@@ -48,6 +56,7 @@ class ChatComponent extends React.Component {
     try {
       this.state.listenerActive();
     } catch (e) {
+      console.log(e);
       // do nothing
     }
     const subscription = this.props.store
@@ -55,20 +64,20 @@ class ChatComponent extends React.Component {
       .doc(this.state.currentConversation.trim())
       .onSnapshot((doc) => {
         if (doc.data().messages) {
-          this.setState({ messages: [...doc.data().messages] })
+          this.setState({ messages: [...doc.data().messages] });
         }
-        setTimeout(()=>{
+        setTimeout(() => {
           this.scrollanchor.current.scrollIntoView();
-        }, 25)
+        }, 25);
       });
-      this.setState({ listenerActive: subscription });
+    this.setState({ listenerActive: subscription });
   };
 
   setGetConversation = () => {
     const freshConvoData = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       messages: [],
-    }
+    };
     //Creates conversation w/ given id if none exists; otherwise references conversation.
     this.props.store
       .collection("conversations")
@@ -85,14 +94,20 @@ class ChatComponent extends React.Component {
       .finally(() => {
         this.toggleSubscription();
       });
-  }
+  };
 
   updateConversation = (e) => {
-    e.preventDefault()
-    if (e.type ==="click") {
-      this.setState({ currentConversation: e.target.id,  messages: []  }, this.setGetConversation())
+    e.preventDefault();
+    if (e.type === "click") {
+      this.setState(
+        { currentConversation: e.target.id, messages: [] },
+        this.setGetConversation()
+      );
     } else {
-      this.setState({ currentConversation: e.target.firstChild.value,  messages: []  }, this.setGetConversation())
+      this.setState(
+        { currentConversation: e.target.firstChild.value, messages: [] },
+        this.setGetConversation()
+      );
     }
   };
 
@@ -146,10 +161,7 @@ class ChatComponent extends React.Component {
           }
         </StyledChatDisplay>
         <form onSubmit={this.handleSubmit}>
-          <StyledChatInput
-            ref={this.msgRef}
-            placeholder="send a message!"
-          />
+          <StyledChatInput ref={this.msgRef} placeholder="send a message!" />
         </form>
       </div>
     );
