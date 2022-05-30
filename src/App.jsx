@@ -8,7 +8,6 @@ import "firebase/compat/auth";
 import "firebase/compat/analytics";
 import { useAuthState } from "react-firebase-hooks/auth";
 import ChatComponent from "./components/ChatComponent";
-import NavBar from "./components/NavBar"
 
 firebase.initializeApp({
   apiKey: import.meta.env.VITE_API_KEY,
@@ -120,7 +119,6 @@ const App = () => {
         >
           Convok
         </h1>
-        <NavBar />
         <SignOut user={user} />
         <ToggleShowChatButton />
       <section>
