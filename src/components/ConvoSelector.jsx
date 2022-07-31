@@ -54,8 +54,7 @@ const ConvoSelector = (props) => {
       <StyledConvoForm
         onSubmit={(e) => {
           const re = [...recentConversations, e.target.firstChild.value];
-          const cl = new Set(re);
-          const arr = [...cl];
+          const arr = [...new Set(re)];
           setRecentConversations(arr);
           props.updateConversation(e)
         }}
