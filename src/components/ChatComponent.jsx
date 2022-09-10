@@ -14,7 +14,7 @@ const StyledChatDisplay = styled.div`
   scroll-behavior: smooth;
   scrollbar-width: none;
   border-radius: 8px;
-  width: 35vw;
+  width: 90vw;
   height: 50vh;
   margin: 10vh auto 1vh auto;
   overflow-x: auto;
