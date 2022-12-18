@@ -10,13 +10,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import ChatComponent from "./components/ChatComponent";
 
 firebase.initializeApp({
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MSGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
-  measurementId: import.meta.env.VITE_MEASURE_ID
+  apiKey: "AIzaSyCSVtPTWq0fR6K3vDBdLm5uYQYY1O8Qw8Q",
+  authDomain: "glassy-outcome-346301.firebaseapp.com",
+  projectId: "glassy-outcome-346301",
+  storageBucket: "glassy-outcome-346301.appspot.com",
+  messagingSenderId: "312850964340",
+  appId: "1:312850964340:web:c95423fbf4f0143c199621",
+  measurementId: "G-H3014VMSDV"
 });
 
 const auth = firebase.auth();
@@ -32,7 +32,7 @@ const StyledSignInOut = styled.button`
   font-weight: bold;
   padding: 5px;
   cursor: pointer;
-`;
+`
 
 const SignIn = () => {
   const signInWithGoogle = () => {
